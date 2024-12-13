@@ -104,32 +104,31 @@ addButton.Click.Add(fun _ ->
     // Show the add form as a dialog
     addForm.ShowDialog() |> ignore
 )
- // Common function to handle Borrow and Return actions
-    let handleBookAction actionName actionFunction =
-        let actionForm = new Form(Text = $"{actionName} Book", Width = 300, Height = 150)
-        let bookIdLabel = new Label(Text = "Book ID:", Left = 20, Top = 20)
-        let bookIdTextBox = new TextBox(Left = 120, Top = 20, Width = 150)
-        let actionButton = new Button(Text = actionName, Left = 120, Top = 60, Width = 100)
-
-        actionButton.Click.Add(fun _ ->
-            let bookId = int bookIdTextBox.Text
-            match books |> Seq.tryFind (fun b -> b.BookId = bookId) with
-            | Some book -> actionFunction book
-            | None -> MessageBox.Show("Book not found!") |> ignore
-        )
-
-        actionForm.Controls.Add(bookIdLabel)
-        actionForm.Controls.Add(bookIdTextBox)
-        actionForm.Controls.Add(actionButton)
-        actionForm.ShowDialog() |> ignore
-
-    // Event handler for "Borrow" button
-    borrowButton.Click.Add(fun _ ->
-        handleBookAction "Borrow" (fun book ->
-            if not book.IsBorrowed then
-                book.IsBorrowed <- true
-                MessageBox.Show($"You have borrowed '{book.Title}'.") |> ignore
+ // Create the "Borrow" button
+let borrowButton = new Button(Text = "Borrow", Left = 50, Top = 120, Width = 100)
+borrowButton.Click.Add(fun _ -> 
+    let bookIdStr = Microsoft.VisualBasic.Interaction.InputBox("Enter Book ID to borrow:", "Borrow")
+    if String.IsNullOrWhiteSpace(bookIdStr) then
+        MessageBox.Show("Canceled successfully.") |> ignore
+    else
+        try
+            let bookId = int bookIdStr
+            if not (bookExists conn bookId) then
+                MessageBox.Show("BookID does not exist.") |> ignore
             else
-                MessageBox.Show("This book is already borrowed.") |> ignore
-        )
-    )
+                use checkCmd = new SqliteCommand("SELECT IsBorrowed FROM Book WHERE BookID = @bookId", conn)
+                checkCmd.Parameters.AddWithValue("@bookId", bookId) |> ignore
+                let isBorrowed = checkCmd.ExecuteScalar() :?> int64
+                if isBorrowed = 1L then
+                    MessageBox.Show("This book is already borrowed.") |> ignore
+                else
+                    let borrowDate = DateTime.Now.ToString("yyyy-MM-dd")
+                    use updateCmd = new SqliteCommand("UPDATE Book SET IsBorrowed = 1, BorrowDate = @borrowDate WHERE BookID = @bookId", conn)
+                    updateCmd.Parameters.AddWithValue("@borrowDate", borrowDate) |> ignore
+                    updateCmd.Parameters.AddWithValue("@bookId", bookId) |> ignore
+                    updateCmd.ExecuteNonQuery() |> ignore
+                    MessageBox.Show($"BookID {bookId} has been borrowed.") |> ignore
+        with
+        | :? FormatException ->
+            MessageBox.Show("Please enter a valid number for Book ID.") |> ignore
+)
