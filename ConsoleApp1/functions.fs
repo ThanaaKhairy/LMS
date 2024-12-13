@@ -30,10 +30,9 @@ let bookExists (conn: SqliteConnection) (bookId: int) =
     let count = cmd.ExecuteScalar() :?> int64
     count > 0L
 
-// Define the main form
+
 let form = new Form(Text = "Library System", Width = 600, Height = 500)
 
-// Create a DataGridView for displaying books
 let dataGridView = new DataGridView(Dock = DockStyle.Bottom, Height = 250)
 dataGridView.Columns.Add("BookID", "Book ID")
 dataGridView.Columns.Add("Title", "Title")
@@ -41,13 +40,10 @@ dataGridView.Columns.Add("Author", "Author Name")
 dataGridView.Columns.Add("Genre", "Genre")
 dataGridView.Columns.Add("Status", "Status")
 
-// Create the "Add" button
 let addButton = new Button(Text = "Add", Left = 50, Top = 50, Width = 100)
 addButton.Click.Add(fun _ -> 
-    // Create a new form for adding books
     let addForm = new Form(Text = "Add New Book", Width = 400, Height = 300)
 
-    // Create labels and textboxes
     let lblBookID = new Label(Text = "Book ID:", Left = 20, Top = 20)
     let txtBookID = new TextBox(Left = 150, Top = 20, Width = 200)
 
@@ -60,7 +56,6 @@ addButton.Click.Add(fun _ ->
     let lblGenre = new Label(Text = "Genre:", Left = 20, Top = 140)
     let txtGenre = new TextBox(Left = 150, Top = 140, Width = 200)
 
-    // Create the Submit button
     let btnSubmit = new Button(Text = "Submit", Left = 150, Top = 180, Width = 100)
     btnSubmit.Click.Add(fun _ -> 
         try
@@ -82,7 +77,7 @@ addButton.Click.Add(fun _ ->
                 cmd.Parameters.AddWithValue("@genre", genre) |> ignore
                 cmd.ExecuteNonQuery() |> ignore
                 MessageBox.Show("Book added successfully!") |> ignore
-                addForm.Close() // Close the add form after successful submission
+                addForm.Close() 
             else
                 MessageBox.Show("This BookID already exists in the database.") |> ignore
         with
@@ -90,7 +85,6 @@ addButton.Click.Add(fun _ ->
             MessageBox.Show("Book ID must be a valid number.") |> ignore
     )
 
-    // Add controls to the add form
     addForm.Controls.Add(lblBookID)
     addForm.Controls.Add(txtBookID)
     addForm.Controls.Add(lblTitle)
@@ -101,9 +95,28 @@ addButton.Click.Add(fun _ ->
     addForm.Controls.Add(txtGenre)
     addForm.Controls.Add(btnSubmit)
 
-    // Show the add form as a dialog
     addForm.ShowDialog() |> ignore
 )
+
+
+// Create the "Display" button
+let displayButton = new Button(Text = "Display", Left = 200, Top = 50, Width = 100)
+displayButton.Click.Add(fun _ -> 
+    dataGridView.Rows.Clear()
+    use cmd = new SqliteCommand("SELECT BookID, Title, Author_Name, Genre, IsBorrowed FROM Book", conn)
+    use reader = cmd.ExecuteReader()
+    while reader.Read() do
+        let bookId = reader.GetInt32(0)
+        let title = reader.GetString(1)
+        let author = reader.GetString(2)
+        let genre = reader.GetString(3)
+        let status = if reader.GetInt64(4) = 1L then "Borrowed" else "Available"
+        dataGridView.Rows.Add(bookId, title, author, genre, status) |> ignore
+    if dataGridView.Rows.Count = 0 then
+        MessageBox.Show("No books found in the library.") |> ignore
+)
+
+
  // Create the "Borrow" button
 let borrowButton = new Button(Text = "Borrow", Left = 50, Top = 120, Width = 100)
 borrowButton.Click.Add(fun _ -> 
