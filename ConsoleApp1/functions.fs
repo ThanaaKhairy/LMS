@@ -104,7 +104,7 @@ addButton.Click.Add(fun _ ->
     // Show the add form as a dialog
     addForm.ShowDialog() |> ignore
 )
-// Common function to handle Borrow and Return actions
+ // Common function to handle Borrow and Return actions
     let handleBookAction actionName actionFunction =
         let actionForm = new Form(Text = $"{actionName} Book", Width = 300, Height = 150)
         let bookIdLabel = new Label(Text = "Book ID:", Left = 20, Top = 20)
