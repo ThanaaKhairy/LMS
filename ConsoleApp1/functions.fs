@@ -2,13 +2,13 @@
 open System.Windows.Forms
 open Microsoft.Data.Sqlite
 
-// Initialize SQLite database connection
+
 let connectionString = "Data Source=Project_database.db"
 use conn = new SqliteConnection(connectionString)
 conn.Open()
 printfn "Database connection successful."
 
-// Ensure the database table exists
+
 let ensureTableExists () =
     use cmd = new SqliteCommand(""" 
         CREATE TABLE IF NOT EXISTS Book (
@@ -23,7 +23,7 @@ let ensureTableExists () =
     cmd.ExecuteNonQuery() |> ignore
 ensureTableExists()
 
-// Function to check if a book exists by BookId
+
 let bookExists (conn: SqliteConnection) (bookId: int) =
     use cmd = new SqliteCommand("SELECT COUNT(*) FROM Book WHERE BookID = @bookId", conn)
     cmd.Parameters.AddWithValue("@bookId", bookId) |> ignore
@@ -99,7 +99,7 @@ addButton.Click.Add(fun _ ->
 )
 
 
-// Create the "Display" button
+
 let displayButton = new Button(Text = "Display", Left = 200, Top = 50, Width = 100)
 displayButton.Click.Add(fun _ -> 
     dataGridView.Rows.Clear()
@@ -117,7 +117,7 @@ displayButton.Click.Add(fun _ ->
 )
 
 
- // Create the "Borrow" button
+
 let borrowButton = new Button(Text = "Borrow", Left = 50, Top = 120, Width = 100)
 borrowButton.Click.Add(fun _ -> 
     let bookIdStr = Microsoft.VisualBasic.Interaction.InputBox("Enter Book ID to borrow:", "Borrow")
@@ -146,7 +146,7 @@ borrowButton.Click.Add(fun _ ->
             MessageBox.Show("Please enter a valid number for Book ID.") |> ignore
 )
 
-// Search Button
+
 let searchButton = new Button(Text = "Search", Left = 350, Top = 50, Width = 100)
 searchButton.Click.Add(fun _ -> 
     let title = Microsoft.VisualBasic.Interaction.InputBox("Enter the Title to search:", "Search by Title")
@@ -171,4 +171,30 @@ searchButton.Click.Add(fun _ ->
 
         if not found then
             MessageBox.Show("No books found with the given title.") |> ignore
+)
+
+let returnButton = new Button(Text = "Return", Left = 200, Top = 120, Width = 100)
+returnButton.Click.Add(fun _ -> 
+    let bookIdStr = Microsoft.VisualBasic.Interaction.InputBox("Enter Book ID to return:", "Return")
+    if String.IsNullOrWhiteSpace(bookIdStr) then
+        MessageBox.Show("Canceled successfully.") |> ignore
+    else
+        try
+            let bookId = int bookIdStr
+            if not (bookExists conn bookId) then
+                MessageBox.Show("BookID does not exist.") |> ignore
+            else
+                use checkCmd = new SqliteCommand("SELECT IsBorrowed FROM Book WHERE BookID = @bookId", conn)
+                checkCmd.Parameters.AddWithValue("@bookId", bookId) |> ignore
+                let isBorrowed = checkCmd.ExecuteScalar() :?> int64
+                if isBorrowed = 0L then
+                    MessageBox.Show("This book has not been borrowed.") |> ignore
+                else
+                    use updateCmd = new SqliteCommand("UPDATE Book SET IsBorrowed = 0, BorrowDate = NULL WHERE BookID = @bookId", conn)
+                    updateCmd.Parameters.AddWithValue("@bookId", bookId) |> ignore
+                    updateCmd.ExecuteNonQuery() |> ignore
+                    MessageBox.Show($"BookID {bookId} has been returned.") |> ignore
+        with
+        | :? FormatException ->
+            MessageBox.Show("Please enter a valid number for Book ID.") |> ignore
 )
