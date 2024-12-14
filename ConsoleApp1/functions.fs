@@ -145,3 +145,30 @@ borrowButton.Click.Add(fun _ ->
         | :? FormatException ->
             MessageBox.Show("Please enter a valid number for Book ID.") |> ignore
 )
+
+// Search Button
+let searchButton = new Button(Text = "Search", Left = 350, Top = 50, Width = 100)
+searchButton.Click.Add(fun _ -> 
+    let title = Microsoft.VisualBasic.Interaction.InputBox("Enter the Title to search:", "Search by Title")
+    if String.IsNullOrWhiteSpace(title) then
+        MessageBox.Show("Canceled successfully.") |> ignore
+    else
+       
+        dataGridView.Rows.Clear()
+        
+        use cmd = new SqliteCommand("SELECT BookID, Title, Author_Name, Genre, IsBorrowed FROM Book WHERE Title LIKE @title", conn)
+        cmd.Parameters.AddWithValue("@title", "%" + title + "%") |> ignore
+        use reader = cmd.ExecuteReader()
+        let mutable found = false
+        while reader.Read() do
+            found <- true
+            let bookId = reader.GetInt32(0)
+            let bookTitle = reader.GetString(1)
+            let author = reader.GetString(2)
+            let genre = reader.GetString(3)
+            let status = if reader.GetInt64(4) = 1L then "Borrowed" else "Available"
+            dataGridView.Rows.Add(bookId, bookTitle, author, genre, status) |> ignore
+
+        if not found then
+            MessageBox.Show("No books found with the given title.") |> ignore
+)
