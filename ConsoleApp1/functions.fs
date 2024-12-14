@@ -100,21 +100,48 @@ addButton.Click.Add(fun _ ->
 
 
 
+// let displayButton = new Button(Text = "Display", Left = 200, Top = 50, Width = 100)
+// displayButton.Click.Add(fun _ -> 
+//     dataGridView.Rows.Clear()
+//     use cmd = new SqliteCommand("SELECT BookID, Title, Author_Name, Genre, IsBorrowed FROM Book", conn)
+//     use reader = cmd.ExecuteReader()
+//     while reader.Read() do
+//         let bookId = reader.GetInt32(0)
+//         let title = reader.GetString(1)
+//         let author = reader.GetString(2)
+//         let genre = reader.GetString(3)
+//         let status = if reader.GetInt64(4) = 1L then "Borrowed" else "Available"
+//         dataGridView.Rows.Add(bookId, title, author, genre, status) |> ignore
+//     if dataGridView.Rows.Count = 0 then
+//         MessageBox.Show("No books found in the library.") |> ignore
+// )
+
+
+// Create the "Display" button
 let displayButton = new Button(Text = "Display", Left = 200, Top = 50, Width = 100)
 displayButton.Click.Add(fun _ -> 
-    dataGridView.Rows.Clear()
+
+    dataGridView.Rows.Clear()// clear rows
+
     use cmd = new SqliteCommand("SELECT BookID, Title, Author_Name, Genre, IsBorrowed FROM Book", conn)
     use reader = cmd.ExecuteReader()
-    while reader.Read() do
-        let bookId = reader.GetInt32(0)
-        let title = reader.GetString(1)
-        let author = reader.GetString(2)
-        let genre = reader.GetString(3)
-        let status = if reader.GetInt64(4) = 1L then "Borrowed" else "Available"
-        dataGridView.Rows.Add(bookId, title, author, genre, status) |> ignore
-    if dataGridView.Rows.Count = 0 then
+
+    let rec processRows () =
+        if reader.Read() then
+            let bookId = reader.GetInt32(0)
+            let title = reader.GetString(1)
+            let author = reader.GetString(2)
+            let genre = reader.GetString(3)
+            let status = if reader.GetInt64(4) = 1L then "Borrowed" else "Available"
+            dataGridView.Rows.Add(bookId, title, author, genre, status) |> ignore
+            processRows ()
+
+    if reader.HasRows then
+        processRows () 
+    else
         MessageBox.Show("No books found in the library.") |> ignore
 )
+
 
 
 
