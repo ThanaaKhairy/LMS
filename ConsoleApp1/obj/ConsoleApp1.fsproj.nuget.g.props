@@ -5,17 +5,17 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\pc\.nuget\packages\</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\k\.nuget\packages\</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.11.1</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.9.1</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="C:\Users\pc\.nuget\packages\" />
+    <SourceRoot Include="C:\Users\k\.nuget\packages\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgSystem_Reactive_Windows_Forms Condition=" '$(PkgSystem_Reactive_Windows_Forms)' == '' ">C:\Users\pc\.nuget\packages\system.reactive.windows.forms\6.0.1</PkgSystem_Reactive_Windows_Forms>
-    <PkgSystem_Data_SQLite Condition=" '$(PkgSystem_Data_SQLite)' == '' ">C:\Users\pc\.nuget\packages\system.data.sqlite\1.0.66.1</PkgSystem_Data_SQLite>
-    <PkgMicrosoft_Data_Sqlite Condition=" '$(PkgMicrosoft_Data_Sqlite)' == '' ">C:\Users\pc\.nuget\packages\microsoft.data.sqlite\9.0.0</PkgMicrosoft_Data_Sqlite>
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\pc\.nuget\packages\fsharp.core\8.0.401</PkgFSharp_Core>
+    <PkgSystem_Reactive_Windows_Forms Condition=" '$(PkgSystem_Reactive_Windows_Forms)' == '' ">C:\Users\k\.nuget\packages\system.reactive.windows.forms\6.0.1</PkgSystem_Reactive_Windows_Forms>
+    <PkgSystem_Data_SQLite Condition=" '$(PkgSystem_Data_SQLite)' == '' ">C:\Users\k\.nuget\packages\system.data.sqlite\1.0.66.1</PkgSystem_Data_SQLite>
+    <PkgMicrosoft_Data_Sqlite Condition=" '$(PkgMicrosoft_Data_Sqlite)' == '' ">C:\Users\k\.nuget\packages\microsoft.data.sqlite\9.0.0</PkgMicrosoft_Data_Sqlite>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\k\.nuget\packages\fsharp.core\8.0.200</PkgFSharp_Core>
   </PropertyGroup>
 </Project>
