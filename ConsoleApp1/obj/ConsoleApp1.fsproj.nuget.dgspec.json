@@ -1,26 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "D:\\f\\Level 4\\First term\\PL-3\\project\\project\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.fsproj": {}
+    "C:\\Users\\k\\Desktop\\New folder\\LMS\\ConsoleApp1\\ConsoleApp1.fsproj": {}
   },
   "projects": {
-    "D:\\f\\Level 4\\First term\\PL-3\\project\\project\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.fsproj": {
+    "C:\\Users\\k\\Desktop\\New folder\\LMS\\ConsoleApp1\\ConsoleApp1.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\f\\Level 4\\First term\\PL-3\\project\\project\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.fsproj",
+        "projectUniqueName": "C:\\Users\\k\\Desktop\\New folder\\LMS\\ConsoleApp1\\ConsoleApp1.fsproj",
         "projectName": "ConsoleApp1",
-        "projectPath": "D:\\f\\Level 4\\First term\\PL-3\\project\\project\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.fsproj",
-        "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "D:\\f\\Level 4\\First term\\PL-3\\project\\project\\ConsoleApp1\\ConsoleApp1\\obj\\",
+        "projectPath": "C:\\Users\\k\\Desktop\\New folder\\LMS\\ConsoleApp1\\ConsoleApp1.fsproj",
+        "packagesPath": "C:\\Users\\k\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\k\\Desktop\\New folder\\LMS\\ConsoleApp1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\k\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0-windows"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\sdk\\8.0.403\\FSharp\\library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\8.0.204\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -42,7 +44,7 @@
             "FSharp.Core": {
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
-              "version": "[8.0.401, )",
+              "version": "[8.0.200, )",
               "generatePathProperty": true
             },
             "Microsoft.Data.Sqlite": {
@@ -80,7 +82,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
